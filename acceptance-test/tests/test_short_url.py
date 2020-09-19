@@ -13,7 +13,6 @@ class ShortenRequester(object):
 
 	def create(self, url: str) -> (str, int):
 		response = requests.post(self.shorten_url, json={"url": url})
-		print(response.json())
 		data = response.json()
 		return data.get("short_url"), response.status_code
 

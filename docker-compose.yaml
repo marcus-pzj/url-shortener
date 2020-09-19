@@ -60,6 +60,15 @@ services:
     environment:
       SERVICE_URL: "http://nginx:80/"
 
+  snowflake:
+    image: ecarpo/snowflake:latest
+    ports:
+      - 9000:9000
+    expose:
+      - '9000'
+    environment:
+      DATACENTER_ID: 1
+      WORKER_ED: 1
 
 volumes:
   db-data:
