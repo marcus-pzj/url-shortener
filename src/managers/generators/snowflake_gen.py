@@ -6,8 +6,10 @@ from utils import base62
 
 class SnowflakeGenerator(UniqueShortKeyGenerator):
 
-    def __init__(self):
-        self.snowflake_url = "http://docker.for.mac.localhost:9000/id/test11"
+    SNOWFLAKE_ENDPOINT = "http://host.docker.internal:9000/id/test11"
+
+    def __init__(self, snowflake_endpoint=SNOWFLAKE_ENDPOINT):
+        self.snowflake_url = snowflake_endpoint
 
     def generate(self, url) -> str:
         response = requests.get(self.snowflake_url)
