@@ -11,7 +11,7 @@ from common.exceptions import ShortUrlException
 from conf import Conf
 from managers.default import DefaultShortUrlManager
 from managers.generators.auto_inc import AutoIncShortKeyGenerator
-# from managers.generators.snowflake_gen import SnowflakeGenerator
+from managers.generators.snowflake_gen import SnowflakeGenerator
 from routes import add_short_url_routes
 from views.shorten import ShortUrlsView
 
@@ -22,8 +22,8 @@ def init_configs(_app):
 
 def create_urls_view():
     urls_tab_accessor = CachedMysqlUrlsTabAccessor()
-    generator = AutoIncShortKeyGenerator(random_step=100)
-    # generator = SnowflakeGenerator()
+    # generator = AutoIncShortKeyGenerator(random_step=100)
+    generator = SnowflakeGenerator()
     short_url_manager = DefaultShortUrlManager(urls_tab_accessor, generator)
     short_urls_view = ShortUrlsView(short_url_manager)
     return short_urls_view

@@ -1,16 +1,16 @@
+import requests
 import random
-from utils.snowflake import SnowflakeClient
-from utils import base62
 
 from managers.generators import UniqueShortKeyGenerator
+from utils import base62
 
 class SnowflakeGenerator(UniqueShortKeyGenerator):
-    DATA_CENTER_ID = 0
-    WORKER_ID = 29
 
     def __init__(self):
-        self.client = SnowflakeClient(self.DATA_CENTER_ID, self.WORKER_ID)
+        self.snowflake_url = "http://docker.for.mac.localhost:9000/id/test11"
 
     def generate(self, url) -> str:
-        res = base62.encode(self.client.next_id())
-        return res
+        response = requests.get(self.snowflake_url)
+        data = int(response.text)
+
+        return base62.encode(data)
