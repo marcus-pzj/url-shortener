@@ -30,5 +30,12 @@ class ShortUrlsView:
         except NotFoundException as e:
             return {'error': e.message}, 404
 
+    def get_all_short_url(self):
+        try:
+            table = self.short_url_manager.get_all()
+            return {'table': table}
+        except NotFoundException as e:
+            return {'error': e.message}, 404 
+
     def _build_url(self, short_key: str) -> str:
         return f'{self._SITE}/{short_key}'

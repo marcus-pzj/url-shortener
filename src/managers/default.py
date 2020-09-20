@@ -8,6 +8,15 @@ class DefaultShortUrlManager(ShortUrlManager):
     def __init__(self, urls_tab_accessor: UrlsTabAccessor, short_key_generator: UniqueShortKeyGenerator):
         super().__init__(urls_tab_accessor, short_key_generator)
 
+    def get_all(self) -> dict:
+        """
+        Returns all entries in the db
+        """
+        table = self.urls_tab_accessor.find_all_short_keys()
+        if table is None:
+            raise NotFoundException('table is empty')
+        return table
+
     def resolve(self, short_key: str) -> str:
         """
         Return the latest source url for the short key.
