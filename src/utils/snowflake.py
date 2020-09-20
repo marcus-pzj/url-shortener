@@ -1,85 +1,68 @@
 """
 snowflake id generator
 
-copied from:
-https://github.com/twitter-archive/snowflake/blob/snowflake-2010/src/main/scala/com/twitter/service/snowflake/IdWorker.scala\
+adapted from:
+https://github.com/cablehead/python-snowflake/blob/master/snowflake.py
+
 """
-import atexit
-import threading
 import time
-
-import redis_lock
-
-from utils.redis import redis_client
+import logging
 
 
-class SnowflakeClient:
-    WORKER_ID_BITS = 5
-    DATA_CENTER_ID_BITS = 0
-    SEQUENCE_BITS = 9
+log = logging.getLogger(__name__)
 
-    WORKER_SHIFT_BITS = SEQUENCE_BITS
-    DATA_CENTER_SHIFT_BITS = WORKER_ID_BITS + SEQUENCE_BITS
-    TIMESTAMP_SHIFT_BITS = DATA_CENTER_ID_BITS + WORKER_ID_BITS + SEQUENCE_BITS
 
-    SEQUENCE_MASK = (1 << SEQUENCE_BITS) - 1
+# Tue, 21 Mar 2006 20:50:14.000 GMT
+twepoch = 1142974214000
 
-    TWEPOCH = 1599636698000
+worker_id_bits = 5
+data_center_id_bits = 5
+max_worker_id = -1 ^ (-1 << worker_id_bits)
+max_data_center_id = -1 ^ (-1 << data_center_id_bits)
+sequence_bits = 12
+worker_id_shift = sequence_bits
+data_center_id_shift = sequence_bits + worker_id_bits
+timestamp_left_shift = sequence_bits + worker_id_bits + data_center_id_bits
+sequence_mask = -1 ^ (-1 << sequence_bits)
 
-    def __init__(self, data_center_id: int, worker_id: int):
-        self._lock = threading.Lock()
-        self._last_timestamp = -1
-        self._sequence = 0
-        self.data_center_id = data_center_id
-        self.worker_id = worker_id
-        self._worker_uid = (
-                (self.data_center_id << self.DATA_CENTER_SHIFT_BITS) |
-                (self.worker_id << self.WORKER_SHIFT_BITS)
-        )
-        self._worker_lock = redis_lock.Lock(redis_client(), self.worker_identity)
-        self.register()
 
-    @property
-    def worker_identity(self):
-        return f'snowflake-{self.data_center_id}-{self.worker_id}'
+def snowflake_to_timestamp(_id):
+    _id = _id >> 22   # strip the lower 22 bits
+    _id += twepoch    # adjust for twitter epoch
+    _id = _id / 1000  # convert from milliseconds to seconds
+    return _id
 
-    def unregister(self):
-        try:
-            self._worker_lock.release()
-        except:
-            pass
 
-    def register(self):
-        atexit.register(self.unregister)
-        self._worker_lock.acquire(blocking=False)
+def generator(worker_id, data_center_id, sleep=lambda x: time.sleep(x/1000.0)):
+    assert worker_id >= 0 and worker_id <= max_worker_id
+    assert data_center_id >= 0 and data_center_id <= max_data_center_id
 
-    def next_id(self) -> int:
-        with self._lock:
-            timestamp = self._timestamp()
-            if timestamp < self._last_timestamp:
-                raise Exception(
-                    'Clock moved backwards, refuse to generate id for %s ms' % (timestamp - self._last_timestamp)
-                )
-            elif timestamp == self._last_timestamp:
-                self._sequence = (self._sequence + 1) & self.SEQUENCE_MASK
-                if self._sequence == 0:
-                    timestamp = self._til_next_millis(self._last_timestamp)
-                else:
-                    self._sequence = 0
-            else:
-                self._sequence = 0
+    last_timestamp = -1
+    sequence = 0
 
-            self._last_timestamp = timestamp
+    while True:
+        timestamp = int(time.time()*1000)
 
-            return ((timestamp - self.TWEPOCH) << self.TIMESTAMP_SHIFT_BITS) | self._worker_uid | self._sequence
+        if last_timestamp > timestamp:
+            log.warning(
+                "clock is moving backwards. waiting until %i" % last_timestamp)
+            sleep(last_timestamp-timestamp)
+            continue
 
-    @classmethod
-    def _timestamp(cls) -> int:
-        return int(1000 * time.time())
+        if last_timestamp == timestamp:
+            sequence = (sequence + 1) & sequence_mask
+            if sequence == 0:
+                log.warning("sequence overrun")
+                sequence = -1 & sequence_mask
+                sleep(1)
+                continue
+        else:
+            sequence = 0
 
-    @classmethod
-    def _til_next_millis(cls, lts) -> int:
-        ts = cls._timestamp()
-        while ts <= lts:
-            ts = cls._timestamp()
-        return ts
+        last_timestamp = timestamp
+
+        yield (
+            ((timestamp-twepoch) << timestamp_left_shift) |
+            (data_center_id << data_center_id_shift) |
+            (worker_id << worker_id_shift) |
+            sequence)

@@ -1,0 +1,23 @@
+mysql> show processlist;
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+| Id | User            | Host             | db           | Command | Time | State                  | Info             |
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+|  5 | event_scheduler | localhost        | NULL         | Daemon  | 1079 | Waiting on empty queue | NULL             |
+|  9 | client          | 172.31.0.3:42994 | short_url_db | Sleep   |    0 |                        | NULL             |
+| 10 | client          | 172.31.0.3:43008 | short_url_db | Sleep   |    0 |                        | NULL             |
+| 11 | client          | 172.31.0.3:43208 | short_url_db | Sleep   |    0 |                        | NULL             |
+| 14 | root            | localhost        | NULL         | Query   |    0 | starting               | show processlist |
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> show processlist;
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+| Id | User            | Host             | db           | Command | Time | State                  | Info             |
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+|  5 | event_scheduler | localhost        | NULL         | Daemon  | 1163 | Waiting on empty queue | NULL             |
+|  9 | client          | 172.31.0.3:42994 | short_url_db | Sleep   |   59 |                        | NULL             |
+| 10 | client          | 172.31.0.3:43008 | short_url_db | Sleep   |   59 |                        | NULL             |
+| 11 | client          | 172.31.0.3:43208 | short_url_db | Sleep   |   60 |                        | NULL             |
+| 14 | root            | localhost        | NULL         | Query   |    0 | starting               | show processlist |
++----+-----------------+------------------+--------------+---------+------+------------------------+------------------+
+5 rows in set (0.01 sec)
