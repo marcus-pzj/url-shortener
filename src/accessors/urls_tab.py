@@ -30,6 +30,16 @@ class CachedMysqlUrlsTabAccessor(UrlsTabAccessor):
             session.add(record)
         self._short_key_mapping_cache.set(short_key, url)
         return record.id
+    
+    def find_all_short_keys(self) -> dict:
+        keys = ['url', 'short_key', 'ctime']
+        with session_ctx() as session:
+            result = {}
+            record = session.query(UrlsTab).all()
+            for row in record:
+                result[row.__dict__["id"]] = {x:row.__dict__[x] for x in keys}
+
+        return result        
 
     def find_last_by_short_key(self, short_key: str) -> Optional[str]:
         url = self._get_from_cache(short_key)
