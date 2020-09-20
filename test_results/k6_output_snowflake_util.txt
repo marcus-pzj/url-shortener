@@ -1,0 +1,94 @@
+=================================== create ===================================
+
+Creating url-shortener_stress-test_run ... done
+
+          /\      |‾‾|  /‾‾/  /‾/   
+     /\  /  \     |  |_/  /  / /    
+    /  \/    \    |      |  /  ‾‾\  
+   /          \   |  |‾\  \ | (_) | 
+  / __________ \  |__|  \__\ \___/ .io
+
+ Init   [--------------------------------------] runner
+ Init   [--------------------------------------] options
+ Init   [--------------------------------------] execution scheduler
+Init   [--------------------------------------] Init engine
+Init   [--------------------------------------] Init metric outputs
+Init   [--------------------------------------] Init API server
+  execution: local
+     script: -
+     output: -
+
+  scenarios: (100.00%) 1 executors, 30 max VUs, 1m30s max duration (incl. graceful stop):
+           * create: 30 looping VUs for 1m0s (exec: create, gracefulStop: 30s)
+
+Init   [--------------------------------------] Init VUs
+Init   [--------------------------------------] Start test
+
+    ✗ create OK status
+     ↳  95% — ✓ 5219 / ✗ 234
+
+    █ setup
+
+    checks.....................: 95.70% ✓ 5219 ✗ 234 
+    data_received..............: 1.1 MB 18 kB/s
+    data_sent..................: 1.1 MB 18 kB/s
+    http_req_blocked...........: avg=226.2µs  min=22.6µs  med=30.5µs   max=41.13ms p(90)=93.58µs  p(95)=154.73µs
+    http_req_connecting........: avg=77.81µs  min=0s      med=0s       max=34.62ms p(90)=0s       p(95)=0s      
+    http_req_duration..........: avg=329.34ms min=18.95ms med=282.4ms  max=1.99s   p(90)=581.52ms p(95)=685.84ms
+    http_req_receiving.........: avg=465.02µs min=75.8µs  med=352.9µs  max=32.65ms p(90)=770.18µs p(95)=989.93µs
+    http_req_sending...........: avg=185.6µs  min=31µs    med=65.1µs   max=40.76ms p(90)=191.68µs p(95)=335.15µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s      
+    http_req_waiting...........: avg=328.69ms min=18.47ms med=281.75ms max=1.99s   p(90)=580.67ms p(95)=684.46ms
+    http_reqs..................: 5453   90.478227/s
+    iteration_duration.........: avg=330.51ms min=45.6µs  med=283.1ms  max=1.99s   p(90)=581.98ms p(95)=687.92ms
+    iterations.................: 5453   90.478227/s
+    vus........................: 30     min=30 max=30
+    vus_max....................: 30     min=30 max=30
+
+
+=================================== resolve ===================================
+
+Creating url-shortener_stress-test_run ... done
+
+          /\      |‾‾|  /‾‾/  /‾/   
+     /\  /  \     |  |_/  /  / /    
+    /  \/    \    |      |  /  ‾‾\  
+   /          \   |  |‾\  \ | (_) | 
+  / __________ \  |__|  \__\ \___/ .io
+
+ Init   [--------------------------------------] runner
+ Init   [--------------------------------------] options
+ Init   [--------------------------------------] execution scheduler
+Init   [--------------------------------------] Init engine
+Init   [--------------------------------------] Init metric outputs
+Init   [--------------------------------------] Init API server
+  execution: local
+     script: -
+     output: -
+
+  scenarios: (100.00%) 1 executors, 500 max VUs, 1m30s max duration (incl. graceful stop):
+           * resolve: 500 looping VUs for 1m0s (exec: resolve, gracefulStop: 30s)
+
+Init   [--------------------------------------] Init VUs
+Init   [--------------------------------------] Start test
+
+    ✓ Not found status
+    ✓ resolve OK status
+
+    █ setup
+
+    checks.....................: 100.00% ✓ 18915 ✗ 0    
+    data_received..............: 3.6 MB  59 kB/s
+    data_sent..................: 1.7 MB  27 kB/s
+    http_req_blocked...........: avg=5.14ms   min=23.3µs     med=30.5µs  max=373.32ms p(90)=119.8µs  p(95)=268.3µs 
+    http_req_connecting........: avg=4.99ms   min=0s         med=0s      max=373ms    p(90)=0s       p(95)=0s      
+    http_req_duration..........: avg=1.59s    min=19.86ms    med=1.57s   max=6.24s    p(90)=2.61s    p(95)=2.88s   
+    http_req_receiving.........: avg=582.34µs min=-31.3855ms med=296.9µs max=227.03ms p(90)=776.55µs p(95)=1.21ms  
+    http_req_sending...........: avg=2.27ms   min=17.2µs     med=55.6µs  max=328.36ms p(90)=252.19µs p(95)=971.85µs
+    http_req_tls_handshaking...: avg=0s       min=0s         med=0s      max=0s       p(90)=0s       p(95)=0s      
+    http_req_waiting...........: avg=1.59s    min=17.03ms    med=1.57s   max=6.05s    p(90)=2.6s     p(95)=2.88s   
+    http_reqs..................: 18916   307.893211/s
+    iteration_duration.........: avg=1.6s     min=26.05ms    med=1.57s   max=6.45s    p(90)=2.62s    p(95)=2.9s    
+    iterations.................: 18915   307.876934/s
+    vus........................: 166     min=166 max=500
+    vus_max....................: 500     min=500 max=500

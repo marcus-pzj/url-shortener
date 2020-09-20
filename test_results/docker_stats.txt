@@ -1,0 +1,8 @@
+CONTAINER ID        NAME                              CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+41a6d9df4480        url-shortener_acceptance-test_1   0.00%               0B / 0B               0.00%               0B / 0B             0B / 0B             0
+1bc8a3838c43        url-shortener_mysql_1             1.36%               9.574MiB / 1GiB       0.93%               12.1MB / 12.1MB     0B / 0B             41
+960685f9f599        url-shortener_nginx_1             0.00%               5.645MiB / 1.945GiB   0.28%               36.9MB / 49.6MB     0B / 0B             2
+9c286651d544        url-shortener_redis_1             0.33%               4.141MiB / 1GiB       0.40%               9.95MB / 5.09MB     0B / 0B             5
+fb7d80210145        url-shortener_short-url_1         0.10%               95.46MiB / 1GiB       9.32%               53.2MB / 53.3MB     0B / 0B             34
+5205273901ac        url-shortener_snowflake_1         0.00%               10.81MiB / 1.945GiB   0.54%               3.27MB / 2.79MB     0B / 0B             2
+6791beca089e        url-shortener_stress-test_1       0.00%               0B / 0B               0.00%               0B / 0B             0B / 0B             0
